@@ -15,11 +15,13 @@ def home_view(request):
     """
     
     article_obj = Article.objects.get(id=1)
+    article_qs = Article.objects.all()
     
     context = {
         "title": article_obj.title,
         "id": article_obj.id,
-        "content": article_obj.content 
+        "content": article_obj.content,
+        "object_list": article_qs
     }
     
     HTML_STRING = render_to_string('home-view.html', context=context)
