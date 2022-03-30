@@ -1,3 +1,13 @@
+from multiprocessing import context
 from django.shortcuts import render
 
-# Create your views here.
+from .models import Article
+
+def article_detail_view(request, id=None):
+    article_obj = None
+    if id is not None:
+        article_obj = Article.objects.get(id=id)
+    context = {
+        "object": article_obj,
+    }
+    return render(request, 'articles/detail.html', context=context)
