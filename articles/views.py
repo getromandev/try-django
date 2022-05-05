@@ -1,9 +1,11 @@
 from multiprocessing import context
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 from .models import Article
 
-def article_create_view(request, id=None):
+@login_required
+def article_create_view(request):
     print('request.POST', request.POST)
     context = {}
     if request.method == 'POST':
