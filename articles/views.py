@@ -1,20 +1,44 @@
 from multiprocessing import context
+from operator import imod
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
+from .forms import ArticleForm
 from .models import Article
 
 @login_required
 def article_create_view(request):
-    print('request.POST', request.POST)
-    context = {}
-    if request.method == 'POST':
+    
+    form = ArticleForm(request.POST or None)
+    context = {
+        "form": form
+    }
+    if form.is_valid():
         title = request.POST.get('title')
         content = request.POST.get('content')
         article_object = Article.objects.create(title=title, content=content)
         context['object'] = article_object
         context['created'] = True
     return render(request, 'articles/create.html', context=context)
+
+# def article_create_view(request):
+#     print('request.POST', request.POST)
+    
+#     form = ArticleForm()
+#     print(dir(form))
+#     context = {
+#         "form": form
+#     }
+#     if request.method == 'POST':
+#         form = ArticleForm(request.POST)
+#         context['form'] = form
+#         if form.is_valid():
+#             title = request.POST.get('title')
+#             content = request.POST.get('content')
+#             article_object = Article.objects.create(title=title, content=content)
+#             context['object'] = article_object
+#             context['created'] = True
+#     return render(request, 'articles/create.html', context=context)
 
 def article_search_view(request):
     print(request.GET)
